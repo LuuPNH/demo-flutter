@@ -19,6 +19,7 @@ class ProductCardWidget extends StatelessWidget {
         child: Row(
           children: [
             Expanded(flex: 2, child: _imageProduct(product.thumbnail)),
+            const SizedBox(width: 8.0),
             Expanded(
                 flex: 3,
                 child: Column(

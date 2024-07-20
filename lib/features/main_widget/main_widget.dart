@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:burningbros/base/base_bloc/base_event.dart';
 import 'package:burningbros/resources/app_const.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,19 +47,17 @@ class MainWidget extends StatefulWidget {
 }
 
 class _MainWidgetState extends BaseWidget<MainBloc, MainWidget> {
-  final _searchController = TextEditingController();
   final _refreshController = RefreshController();
+
+  ///Debounce searching
+  Timer? _debounce;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MainBloc>(
       create: (context) => bloc,
       child: MultiBlocListener(
-        listeners: [
-          _onAddListenerError(),
-          _onAddListenerRefreshProducts(),
-          _onAddListenerLoadMoreProducts(),
-        ],
+        listeners: _onAddListener,
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
@@ -66,7 +66,7 @@ class _MainWidgetState extends BaseWidget<MainBloc, MainWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppBarSearchWidget(
-                    controller: _searchController,
+                    onChangedSearch: _onSearchChanged,
                     loadingWidget: _buildLoadingSearch(),
                   ),
                   Expanded(child: _buildBody())
@@ -77,6 +77,48 @@ class _MainWidgetState extends BaseWidget<MainBloc, MainWidget> {
         ),
       ),
     );
+  }
+
+  ///   -------- Listener --------
+  List<BlocListener> get _onAddListener => [
+        ///Listen show error dialog
+        BlocListener<MainBloc, MainState>(
+          bloc: bloc,
+          listenWhen: (p, c) => c.error != null,
+          listener: (context, state) =>
+              DialogUtils.showErrorDialog(context, state.error.toString()),
+        ),
+
+        ///Listen turn on/off header refresh list item
+        BlocListener<MainBloc, MainState>(
+          bloc: bloc,
+          listenWhen: (p, c) => !c.isLoadingRefresh,
+          listener: (context, state) {
+            if (!state.isLoadingRefresh) {
+              _refreshController.refreshCompleted();
+            }
+          },
+        ),
+
+        ///Listen turn on/off header load more list item
+        BlocListener<MainBloc, MainState>(
+          bloc: bloc,
+          listenWhen: (p, c) => !c.isLoadingLoadMore,
+          listener: (context, state) {
+            if (!state.isLoadingLoadMore) {
+              _refreshController.loadComplete();
+            }
+          },
+        )
+      ];
+
+  /// ---------- Function ----------
+
+  _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: AppConstant.debounceTimeSearch), () {
+      addEvent(SearchProductsEvent(query));
+    });
   }
 
   Widget _buildLoadingSearch() {
@@ -112,48 +154,13 @@ class _MainWidgetState extends BaseWidget<MainBloc, MainWidget> {
             child: ListView.separated(
               itemCount: state.products!.items!.length,
               separatorBuilder: (_, __) => const SizedBox(height: AppConstant.spacingItemInList),
-              itemBuilder: (_, i) => ProductCardWidget(product: state.products!.items![i]),
+              itemBuilder: (_, i) => ProductCardWidget(
+                  key: ValueKey(state.products!.items![i].id),
+                  product: state.products!.items![i]),
             ),
           );
         },
       ),
-    );
-  }
-
-  //   -------- Listener -------- //
-
-  ///Listen show error dialog
-  BlocListener _onAddListenerError() {
-    return BlocListener<MainBloc, MainState>(
-      bloc: bloc,
-      listenWhen: (p, c) => c.error != null,
-      listener: (context, state) => DialogUtils.showErrorDialog(context, state.error.toString()),
-    );
-  }
-
-  ///Listen turn on/off header refresh list item
-  BlocListener _onAddListenerRefreshProducts() {
-    return BlocListener<MainBloc, MainState>(
-      bloc: bloc,
-      listenWhen: (p, c) => !c.isLoadingRefresh,
-      listener: (context, state) {
-        if (!state.isLoadingRefresh) {
-          _refreshController.refreshCompleted();
-        }
-      },
-    );
-  }
-
-  ///Listen turn on/off header load more list item
-  BlocListener _onAddListenerLoadMoreProducts() {
-    return BlocListener<MainBloc, MainState>(
-      bloc: bloc,
-      listenWhen: (p, c) => !c.isLoadingLoadMore,
-      listener: (context, state) {
-        if (!state.isLoadingLoadMore) {
-          _refreshController.loadComplete();
-        }
-      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,11 +20,11 @@ class MainBloc extends BaseBloc<MainState> {
     this.dummyRepository,
   ) : super(const MainState()) {
     on<LoadMoreProductsEvent>(_onAddLoadMoreProductsEvent);
+    on<SearchProductsEvent>(_onAddSearchProductsEvent, transformer: restartable());
   }
 
   @override
   void onAddInitialEvent(InitialEvent event, Emitter<MainState> emit) async {
-    await Future.delayed(const Duration(seconds: 1)); //Fake delay to smooth application
     final result = await dummyRepository.getAllProducts();
     emit(state.copyWith(products: result));
   }
@@ -33,19 +34,28 @@ class MainBloc extends BaseBloc<MainState> {
     emit(state.copyWith(error: event.error));
   }
 
+  @override
+  void onAddRefreshEvent(RefreshEvent event, Emitter<MainState> emit) async {
+    emit(state.copyWith(isLoadingRefresh: true));
+    final result = await dummyRepository.getAllProducts(keyword: state.searchKeyword);
+    emit(state.copyWith(products: result));
+  }
+
   Future<void> _onAddLoadMoreProductsEvent(
       LoadMoreProductsEvent event, Emitter<MainState> emit) async {
     if (state.products?.nextItems == null) return;
     emit(state.copyWith(isLoadingLoadMore: true));
-    final result = await dummyRepository.getAllProducts(skip: state.products!.nextItems!);
+    final result = await dummyRepository.getAllProducts(
+      skip: state.products!.nextItems!,
+      keyword: state.searchKeyword,
+    );
     emit(state.copyWith(
         products: result.copyWith(items: [...state.products?.items ?? [], ...result.items ?? []])));
   }
 
-  @override
-  void onAddRefreshEvent(RefreshEvent event, Emitter<MainState> emit) async {
-    emit(state.copyWith(isLoadingRefresh: true));
-    final result = await dummyRepository.getAllProducts();
-    emit(state.copyWith(products: result));
+  Future<void> _onAddSearchProductsEvent(SearchProductsEvent event, Emitter<MainState> emit) async {
+    emit(state.copyWith(isLoadingSearch: true));
+    final result = await dummyRepository.getAllProducts(keyword: event.keyword);
+    emit(state.copyWith(searchKeyword: event.keyword, products: result));
   }
 }

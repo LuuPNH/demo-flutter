@@ -6,6 +6,7 @@ class MainState {
   final bool isLoadingSearch;
   final bool isLoadingLoadMore;
   final bool isLoadingRefresh;
+  final String searchKeyword;
   final dynamic error;
   final BaseListModel<Product>? products;
 
@@ -14,6 +15,7 @@ class MainState {
     this.isLoadingSearch = false,
     this.isLoadingLoadMore = false,
     this.isLoadingRefresh = false,
+    this.searchKeyword = '',
     this.error,
     this.products = const BaseListModel.init(),
   });
@@ -27,6 +29,7 @@ class MainState {
           isLoadingSearch == other.isLoadingSearch &&
           isLoadingLoadMore == other.isLoadingLoadMore &&
           isLoadingRefresh == other.isLoadingRefresh &&
+          searchKeyword == other.searchKeyword &&
           error == other.error &&
           products == other.products;
 
@@ -37,6 +40,7 @@ class MainState {
       isLoadingLoadMore.hashCode ^
       isLoadingRefresh.hashCode ^
       error.hashCode ^
+      searchKeyword.hashCode ^
       products.hashCode;
 
   MainState copyWith({
@@ -44,6 +48,7 @@ class MainState {
     bool? isLoadingSearch,
     bool? isLoadingLoadMore,
     bool? isLoadingRefresh,
+    String? searchKeyword,
     dynamic error,
     BaseListModel<Product>? products,
   }) {
@@ -52,6 +57,7 @@ class MainState {
       isLoadingSearch: isLoadingSearch ?? false,
       isLoadingLoadMore: isLoadingLoadMore ?? false,
       isLoadingRefresh: isLoadingRefresh ?? false,
+      searchKeyword: searchKeyword ?? this.searchKeyword,
       error: error,
       products: products ?? this.products,
     );

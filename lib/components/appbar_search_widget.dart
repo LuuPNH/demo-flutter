@@ -5,11 +5,11 @@ import '../generated/l10n.dart';
 class AppBarSearchWidget extends StatelessWidget {
   const AppBarSearchWidget({
     super.key,
-    required this.controller,
+    this.onChangedSearch,
     this.loadingWidget,
   });
 
-  final TextEditingController controller;
+  final Function(String)? onChangedSearch;
   final Widget? loadingWidget;
 
   @override
@@ -28,7 +28,7 @@ class AppBarSearchWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: TextFormField(
-              controller: controller,
+              onChanged: onChangedSearch,
               decoration: _inputDecoration(context),
               keyboardType: TextInputType.text,
             ),
@@ -47,6 +47,4 @@ class AppBarSearchWidget extends StatelessWidget {
       suffixIcon: loadingWidget,
     );
   }
-
-
 }

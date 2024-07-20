@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'base_event.dart';
 
@@ -9,7 +10,7 @@ abstract class BaseBloc<S> extends Bloc<BaseEvent, S> {
   BaseBloc(super.initialState) {
     on<InitialEvent>(onAddInitialEvent);
     on<ErrorEvent>(onAddErrorEvent);
-    on<RefreshEvent>(onAddRefreshEvent);
+    on<RefreshEvent>(onAddRefreshEvent, transformer: restartable());
   }
 
   @override

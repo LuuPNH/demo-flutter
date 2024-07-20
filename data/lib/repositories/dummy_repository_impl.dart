@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../dto/base_response_dto/product_response_dto.dart';
 
 ///Path
-const _pathproducts = '/products';
+const _pathProducts = '/products/search';
 
 @Singleton(as: DummyRepository)
 class DummyRepositoryImpl implements DummyRepository {
@@ -15,13 +15,14 @@ class DummyRepositoryImpl implements DummyRepository {
     this.dioRequest,
   );
 
-  GET get _getAllProductsMethod => GET(_pathproducts);
+  GET get _getAllProductsMethod => GET(_pathProducts);
 
   @override
-  Future<BaseListModel<Product>> getAllProducts({int skip = 0, int limit = 20}) async {
+  Future<BaseListModel<Product>> getAllProducts(
+      {int skip = 0, int limit = 20, String keyword = ''}) async {
     final res = await dioRequest.request(
       method: _getAllProductsMethod,
-      queryParameters: {"limit": limit, "skip": skip},
+      queryParameters: {"limit": limit, "skip": skip, "q": keyword},
     );
     return ProductsResponseDto.fromJson(res.data).toDomain;
   }
