@@ -1,0 +1,16 @@
+{
+  "dart.flutterSdkPath": ".fvm/versions/3.22.2",
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "[dart]": {
+    "editor.rulers": [
+        100
+    ],
+    "editor.wordWrapColumn": 100,
+  },
+  "java.compile.nullAnalysis.mode": "disabled"
+}

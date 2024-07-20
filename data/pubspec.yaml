@@ -1,0 +1,36 @@
+name: data
+description: A data project.
+
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+
+dependencies:
+  dio: ^5.4.3
+  flutter:
+    sdk: flutter
+
+  domain:
+    path: ../domain
+  shared:
+    path: ../shared
+  get_it: ">=7.0.0 <8.0.0"
+  injectable: ^2.4.2
+  shared_preferences: ^2.2.3
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: 
+  injectable_generator:
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
+
+
+
+
