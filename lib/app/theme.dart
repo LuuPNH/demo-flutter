@@ -22,10 +22,19 @@ class Application {
       primaryColor: AppColors.white,
       primaryIconTheme: const IconThemeData(color: AppColors.black, size: 24.0),
       scaffoldBackgroundColor: AppColors.greyF4F4F4,
+      cardTheme: const CardTheme(
+        color: AppColors.white,
+        surfaceTintColor: AppColors.white,
+      ),
       textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          color: AppColors.black,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
         headlineMedium: TextStyle(
           color: AppColors.black,
-          fontSize: 14.0,
+          fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),
         headlineSmall: TextStyle(

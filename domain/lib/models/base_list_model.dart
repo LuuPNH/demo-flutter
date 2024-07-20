@@ -4,29 +4,28 @@ class BaseListModel<T> {
   BaseListModel({
     this.items,
     this.total,
-    this.limit,
+    this.limit = 0, //default expect business
     this.skip,
   });
 
   const BaseListModel.init({
     this.items = const [],
     this.total = 0,
-    this.limit = 0,
+    this.limit = 20, //default expect business
     this.skip = 0,
   });
 
   final List<T>? items;
   final int? total;
-  final int? limit;
+  final int limit;
   final int? skip;
 
   bool get canLoadMore {
-    if (total == null || limit == null || items == null) return false;
-    final int loadedItems = (skip ?? 0) + (items?.length ?? 0);
-    return loadedItems < total!;
+    if (total == null || items == null || items!.isEmpty) return false;
+    return items!.length < total!;
   }
 
-  int? get nextItems => canLoadMore ? ((skip! ~/ limit!) + 1) : null;
+  int? get nextItems => canLoadMore ? (items?.length ?? 0) : null;
 
   BaseListModel<T> copyWith({
     List<T>? items,
@@ -56,5 +55,10 @@ class BaseListModel<T> {
   @override
   int get hashCode {
     return items.hashCode ^ total.hashCode ^ limit.hashCode ^ skip.hashCode ^ canLoadMore.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'BaseListModel{items: $items, total: $total, limit: $limit, skip: $skip}';
   }
 }

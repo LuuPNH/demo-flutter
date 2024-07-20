@@ -34,5 +34,18 @@ class MainBloc extends BaseBloc<MainState> {
   }
 
   Future<void> _onAddLoadMoreProductsEvent(
-      LoadMoreProductsEvent event, Emitter<MainState> emit) async {}
+      LoadMoreProductsEvent event, Emitter<MainState> emit) async {
+    if (state.products?.nextItems == null) return;
+    emit(state.copyWith(isLoadingLoadMore: true));
+    final result = await dummyRepository.getAllProducts(skip: state.products!.nextItems!);
+    emit(state.copyWith(
+        products: result.copyWith(items: [...state.products?.items ?? [], ...result.items ?? []])));
+  }
+
+  @override
+  void onAddRefreshEvent(RefreshEvent event, Emitter<MainState> emit) async {
+    emit(state.copyWith(isLoadingRefresh: true));
+    final result = await dummyRepository.getAllProducts();
+    emit(state.copyWith(products: result));
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:burningbros/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../generated/l10n.dart';
