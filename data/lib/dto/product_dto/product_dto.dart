@@ -2,6 +2,7 @@ import 'package:domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product_dto.g.dart';
+
 part 'product_dto.freezed.dart';
 
 @freezed
@@ -29,6 +30,15 @@ class ProductDto with _$ProductDto {
   }) = _ProductDto;
 
   factory ProductDto.fromJson(Map<String, dynamic> json) => _$ProductDtoFromJson(json);
+
+  factory ProductDto.fromDomain(Product pro) => ProductDto(
+        id: pro.id,
+        title: pro.title,
+        description: pro.description,
+        discountPercentage: pro.discountPercentage,
+        price: pro.price,
+        thumbnail: pro.thumbnail,
+      );
 }
 
 extension ProductDtoExtension on ProductDto {
