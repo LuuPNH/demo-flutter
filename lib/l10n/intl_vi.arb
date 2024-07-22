@@ -1,5 +1,6 @@
 {
   "@@locale": "vi",
   "noDataFoundHere": "Opps, không có dữ liệu ở đây!",
-  "searchProduct": "Tìm sản phẩm"
+  "searchProduct": "Tìm sản phẩm",
+  "listFavorite": "Danh sách sản phẩm đã thích"
 }

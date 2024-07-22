@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "listFavorite":
+            MessageLookupByLibrary.simpleMessage("Danh sách sản phẩm đã thích"),
         "noDataFoundHere": MessageLookupByLibrary.simpleMessage(
             "Opps, không có dữ liệu ở đây!"),
         "searchProduct": MessageLookupByLibrary.simpleMessage("Tìm sản phẩm")

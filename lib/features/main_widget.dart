@@ -6,16 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
-import '../../app/theme.dart';
-import '../../base/base_bloc/base_widget.dart';
-import '../../components/appbar_search_widget.dart';
-import '../../components/no_data_widget.dart';
-import '../../components/product_card_widget.dart';
-import '../../generated/l10n.dart';
-import '../../config/bloc_observer.dart';
-import '../../di/di.dart' as di;
-import '../../navigation/router_config.dart' as navigation;
-import '../../utils/dialog_utils.dart';
+import '../app/theme.dart';
+import '../base/base_bloc/base_widget.dart';
+import '../components/appbar_search_widget.dart';
+import '../components/no_data_widget.dart';
+import '../components/product_card_widget.dart';
+import '../generated/l10n.dart';
+import '../config/bloc_observer.dart';
+import '../di/di.dart' as di;
+import '../navigation/router_config.dart' as navigation;
+import '../utils/dialog_utils.dart';
 import 'main_bloc.dart';
 
 void loadApp(String env) async {
@@ -155,8 +155,7 @@ class _MainWidgetState extends BaseWidget<MainBloc, MainWidget> {
               itemCount: state.products!.items!.length,
               separatorBuilder: (_, __) => const SizedBox(height: AppConstant.spacingItemInList),
               itemBuilder: (_, i) => ProductCardWidget(
-                  key: ValueKey(state.products!.items![i].id),
-                  product: state.products!.items![i]),
+                  key: ValueKey(state.products!.items![i].id), product: state.products!.items![i]),
             ),
           );
         },

@@ -22,6 +22,9 @@ class Application {
       primaryColor: AppColors.white,
       primaryIconTheme: const IconThemeData(color: AppColors.black, size: 24.0),
       scaffoldBackgroundColor: AppColors.greyF4F4F4,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AppColors.greyF4F4F4,
+      ),
       cardTheme: const CardTheme(
         color: AppColors.white,
         surfaceTintColor: AppColors.white,

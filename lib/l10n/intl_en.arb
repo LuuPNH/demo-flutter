@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
   "noDataFoundHere": "Opps, no data found here!",
-  "searchProduct": "Search product"
+  "searchProduct": "Search product",
+  "listFavorite": "List of favorite products"
 }

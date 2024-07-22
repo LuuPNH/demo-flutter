@@ -1,4 +1,7 @@
+import 'package:burningbros/navigation/router_name.dart';
+import 'package:burningbros/resources/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../generated/l10n.dart';
 
@@ -17,8 +20,8 @@ class AppBarSearchWidget extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.menu, size: 27),
+          onPressed: () => GoRouter.of(context).pushNamed(RouterName.listFavoriteProducts),
+          icon: const Icon(Icons.star_rate, size: 27, color: AppColors.favorite),
         ),
         Expanded(
           child: Container(

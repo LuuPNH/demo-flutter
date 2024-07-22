@@ -1,10 +1,10 @@
 class RouterName {
+  RouterName._();
+
   /// ------ Main ------ ///
   static const String mainWidget = '/main';
 
-  /// ------ Login ------ ///
-  static const String loginWidget = 'login';
+  static const String productDetail = '/product-detail';
 
-  /// ------ Home ------ ///
-  static const String homeWidget = 'home';
+  static const String listFavoriteProducts = '/list-favorite-products';
 }
